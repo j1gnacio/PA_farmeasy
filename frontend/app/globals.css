@@ -1,0 +1,15 @@
+/* frontend/app/globals.css */
+
+/* ELIMINA ESTAS LÍNEAS COMPLETAMENTE */
+/* @import "tailwindcss/preflight"; */
+/* @import "tailwindcss/components"; */
+/* @import "tailwindcss/utilities"; */
+
+/* Puedes añadir tus estilos CSS globales aquí */
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* Por ejemplo, aquí podrías definir un color de fondo general si no lo haces con Tailwind classes */
+    /* background-color: #f0f0f0; */
+}

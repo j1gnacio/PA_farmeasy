@@ -2,11 +2,10 @@ const Usuario = require('../models/Usuario');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// @desc    Registrar un nuevo usuario
-// @route   POST /api/auth/register
-// @access  Public
+// Registrar un nuevo usuario
+// POST /api/auth/register
+// Acceso público
 exports.registerUser = async (req, res) => {
-    // *** CAMBIO AQUÍ: Desestructuramos 'username' en lugar de 'nombre' ***
     const { username, email, password } = req.body;
     try {
         let usuario = await Usuario.findOne({ email });
@@ -16,7 +15,7 @@ exports.registerUser = async (req, res) => {
         usuario = new Usuario({
             username,
             email,
-            password // *** CAMBIO AQUÍ: Pasamos 'password' al constructor del modelo ***
+            password
         });
         await usuario.save();
 
@@ -41,18 +40,16 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-// @desc    Autenticar usuario y obtener token
-// @route   POST /api/auth/login
-// @access  Public
+// Autenticar usuario y obtener token
+// POST /api/auth/login
+// Acceso público
 exports.loginUser = async (req, res) => {
-    // *** CAMBIO AQUÍ: Desestructuramos 'password' en lugar de 'contrasenia' ***
     const { email, password } = req.body;
     try {
         let usuario = await Usuario.findOne({ email });
         if (!usuario) {
             return res.status(400).json({ message: 'Credenciales inválidas' });
         }
-        // *** CAMBIO AQUÍ: Pasamos 'password' al método matchPassword ***
         const isMatch = await usuario.matchPassword(password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Credenciales inválidas' });
@@ -79,12 +76,12 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// @desc    Obtener perfil del usuario actual
-// @route   GET /api/auth/me (o /api/auth/profile)
-// @access  Private (requiere token JWT)
+// Obtener perfil del usuario actual
+// GET /api/auth/me (o /api/auth/profile)
+// Acceso privado (requiere token JWT)
 exports.getMe = async (req, res) => {
     try {
-        const usuario = await Usuario.findById(req.user.id).select('-contrasenia'); // *** CAMBIO AQUÍ: Excluir 'contrasenia' ***
+        const usuario = await Usuario.findById(req.user.id).select('-contrasenia');
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });

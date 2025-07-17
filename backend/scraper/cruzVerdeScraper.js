@@ -1,4 +1,3 @@
-// backend/scraper/cruzVerdeScraper.js
 const BaseScraper = require('./baseScraper');
 const Medicamento = require('../models/Medicamento');
 const Farmacia = require('../models/Farmacia');
@@ -31,9 +30,7 @@ class CruzVerdeScraper extends BaseScraper {
             await this.goto(urlCompleta);
             console.log(`Buscando "${medicamentoBusqueda}" en ${this.farmaciaNombre} en URL: ${urlCompleta}`);
 
-            // --- INICIO: MANEJO DE VENTANAS EMERGENTES (POPUPS) ---
-
-            // 1. Manejar el popup de ofertas/notificaciones (Si existe y es el primero)
+            // Manejar el popup de ofertas/notificaciones (Si existe y es el primero)
             const closeOffersPopupSelector = 'text=No, gracias';
             try {
                 await this.page.waitForSelector(closeOffersPopupSelector, { timeout: 10000 });
@@ -43,35 +40,6 @@ class CruzVerdeScraper extends BaseScraper {
             } catch (e) {
                 console.log('No se encontró el popup de ofertas o ya fue cerrado.');
             }
-
-
-            // 2. Manejar el popup de selección de Región/Comuna
-            // ESTE BLOQUE DE CÓDIGO HA SIDO COMENTADO PARA EVITAR EL ERROR DE TIMEOUT.
-            // Si necesitas habilitarlo en el futuro, descomenta las siguientes líneas.
-            /*
-            const regionDropdownSelector = 'select[id="region"]';
-            const comunaDropdownSelector = 'select[id="comuna"]';
-            const acceptLocationButtonSelector = 'button:has-text("Aceptar")';
-
-            try {
-                await this.page.waitForSelector(regionDropdownSelector, { timeout: 15000 });
-                console.log('Popup de selección de ubicación detectado.');
-
-                await this.page.selectOption(regionDropdownSelector, { label: 'Región Metropolitana' });
-                await this.page.waitForTimeout(1000);
-                await this.page.selectOption(comunaDropdownSelector, { label: 'Las Condes' });
-                await this.page.waitForTimeout(1000);
-
-                await this.page.click(acceptLocationButtonSelector);
-                console.log('Ubicación seleccionada y aceptada en el popup.');
-                await this.page.waitForTimeout(3000);
-            } catch (e) {
-                console.warn('No se encontró el popup de selección de ubicación o hubo un error al interactuar con él:', e.message);
-            }
-            */
-
-            // --- FIN: MANEJO DE VENTANAS EMERGENTES (POPUPS) ---
-
 
             // Selector para el CONTENEDOR de cada producto en la lista de resultados
             const realProductCardSelector = 'div:has(ml-product-image-new):has(ml-price-tag-v2)';

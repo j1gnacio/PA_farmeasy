@@ -1,5 +1,5 @@
 // backend/scraper/baseScraper.js
-const { chromium } = require('playwright'); // Puedes usar firefox o webkit también
+const {chromium} = require('playwright'); // Puedes usar firefox o webkit también
 
 class BaseScraper {
     constructor() {
@@ -8,7 +8,7 @@ class BaseScraper {
     }
 
     async init() {
-        this.browser = await chromium.launch({ headless: true }); // true para sin interfaz
+        this.browser = await chromium.launch({headless: true}); // true para sin interfaz
         this.page = await this.browser.newPage();
         console.log('Navegador Playwright iniciado.');
     }
@@ -22,7 +22,7 @@ class BaseScraper {
 
     async goto(url) {
         try {
-            await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await this.page.goto(url, {waitUntil: 'domcontentloaded', timeout: 60000});
             console.log(`Navegando a: ${url}`);
         } catch (error) {
             console.error(`Error al navegar a ${url}:`, error);
@@ -56,7 +56,7 @@ class BaseScraper {
     async clickAndWaitForNavigation(selector) {
         try {
             await Promise.all([
-                this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+                this.page.waitForNavigation({waitUntil: 'domcontentloaded'}),
                 this.page.click(selector)
             ]);
             console.log(`Clic en ${selector} y espera de navegación exitosa.`);

@@ -1,3 +1,4 @@
+// backend/models/PrecioMedicamento.js
 const mongoose = require('mongoose');
 
 const precioMedicamentoSchema = new mongoose.Schema({
@@ -11,11 +12,13 @@ const precioMedicamentoSchema = new mongoose.Schema({
         ref: 'Farmacia',
         required: true
     },
-    precioNormal: {
+    // *** CAMBIO AQUÍ ***
+    precio: { // <-- Cambia 'precioNormal' a 'precio'
         type: Number,
         required: true,
         min: 0
     },
+    // *** FIN CAMBIO ***
     precioOferta: {
         type: Number,
         min: 0,

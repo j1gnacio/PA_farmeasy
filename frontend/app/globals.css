@@ -1,15 +1,576 @@
 /* frontend/app/globals.css */
 
-/* ELIMINA ESTAS LÍNEAS COMPLETAMENTE */
-/* @import "tailwindcss/preflight"; */
-/* @import "tailwindcss/components"; */
-/* @import "tailwindcss/utilities"; */
+/* --- Variables CSS para colores y fuentes --- */
+:root {
+    --color-morado-principal: #6A5ACD;
+    --color-morado-oscuro: #5A4AAD;
+    --color-morado-claro: #9370DB;
+    --color-azul-boton: #2196f3;
+    --color-azul-boton-hover: #1976d2;
+    --color-azul-fondo-hero: #E0E6F8;
+    --color-gris-claro: #F8F9FA;
+    --color-texto-default: #333;
+    --color-texto-secundario: #666;
+    --color-texto-error: #ef4444;
+    --color-verde-precio: #28a745;
+    --color-gris-precio-tachado: #666;
+    --fuente-principal: Arial, sans-serif;
+}
 
-/* Puedes añadir tus estilos CSS globales aquí */
+/* --- Estilos globales y reseteos --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     padding: 0;
     margin: 0;
+    font-family: var(--fuente-principal);
+    line-height: 1.6;
+    color: var(--color-texto-default);
+}
+
+html, body, #__next {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Clases específicas para el layout global (Header y Footer) --- */
+
+.layout-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Global */
+.layout-header {
+    background-color: var(--color-morado-principal);
+    padding: 1rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+.layout-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.layout-header .logo-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.layout-header nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 1rem;
+}
+
+.layout-header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.125rem;
+    transition: text-decoration 0.3s ease;
+}
+
+.layout-header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content Area */
+.layout-main {
+    flex-grow: 1;
+}
+
+/* Footer Global */
+.layout-footer {
+    background-color: var(--color-morado-principal);
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: auto;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* --- Clases específicas para el contenido de HomePage.tsx --- */
+
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--color-azul-fondo-hero);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    flex-grow: 1;
+}
+
+.hero-section h1 {
+    color: var(--color-texto-default);
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.hero-section form {
+    width: 70%;
+    max-width: 800px;
+    display: flex;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.hero-section form input {
+    flex-grow: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 1.1em;
+}
+
+.hero-section form button[type="submit"] {
+    padding: 15px 20px;
+    background-color: var(--color-morado-principal);
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+.hero-section form button[type="submit"]:hover {
+    background-color: var(--color-morado-oscuro);
+}
+
+/* Search Results Section */
+.search-results-section {
+    padding: 50px 20px;
+    background-color: var(--color-gris-claro);
+    flex-grow: 1;
+}
+
+.search-results-section h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--color-texto-default);
+}
+
+.search-results-section p.loading,
+.search-results-section p.error,
+.search-results-section p.no-results {
+    text-align: center;
+    color: var(--color-texto-secundario);
+    margin-top: 20px;
+}
+
+.search-results-section p.error {
+    color: var(--color-texto-error);
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.medicament-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.medicament-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.medicament-card img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.medicament-card p {
+    font-size: 0.9em;
+    color: var(--color-texto-secundario);
+    margin-bottom: 5px;
+}
+
+.medicament-card .prices-section {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.medicament-card .prices-section h4 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.medicament-card .prices-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.medicament-card .prices-section li {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+.medicament-card .prices-section .current-price {
+    font-weight: bold;
+    color: var(--color-verde-precio);
+    font-size: 1.1em;
+}
+
+.medicament-card .prices-section .normal-price {
+    text-decoration: line-through;
+    color: var(--color-gris-precio-tachado);
+    margin-left: 10px;
+}
+
+.medicament-card .prices-section small {
+    color: #888;
+}
+
+.medicament-card .detail-link {
+    margin-top: 15px;
+    text-align: center;
+    background-color: var(--color-morado-principal);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.medicament-card .detail-link:hover {
+    background-color: var(--color-morado-oscuro);
+}
+
+/* Features Section */
+.features-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 50px 20px;
+    gap: 30px;
+    background-color: var(--color-gris-claro);
+}
+
+.feature-card {
+    background-color: var(--color-morado-claro);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: calc(33% - 40px);
+    min-width: 280px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
     box-sizing: border-box;
-    /* Por ejemplo, aquí podrías definir un color de fondo general si no lo haces con Tailwind classes */
-    /* background-color: #f0f0f0; */
+}
+
+.feature-card div {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1em;
+    color: white;
+}
+
+/* --- Estilos para la página de Login --- */
+.login-page-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f2f5;
+}
+
+.login-form-wrapper {
+    background-color: #e0c8f0;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.login-form-wrapper h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.login-form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+    font-weight: bold;
+}
+
+.login-form-group input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.login-form-group input:focus {
+    outline: none;
+    border-color: var(--color-morado-principal);
+    box-shadow: 0 0 5px var(--color-morado-principal);
+}
+
+.login-button {
+    background-color: var(--color-azul-boton);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.login-button:hover {
+    background-color: var(--color-azul-boton-hover);
+}
+
+.login-button svg {
+    height: 20px;
+    width: 20px;
+    fill: white;
+}
+
+.login-signup-link {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.login-signup-link a {
+    color: var(--color-azul-boton);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- Estilos para la página de Registro --- */
+.register-page-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f2f5;
+}
+
+.register-form-wrapper {
+    background-color: #e0c8f0;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.register-form-wrapper h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.register-form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.register-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+    font-weight: bold;
+}
+
+.register-form-group input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.register-form-group input:focus {
+    outline: none;
+    border-color: var(--color-morado-principal);
+    box-shadow: 0 0 5px var(--color-morado-principal);
+}
+
+.register-button {
+    background-color: var(--color-azul-boton);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.register-button:hover {
+    background-color: var(--color-azul-boton-hover);
+}
+
+.register-button svg {
+    height: 20px;
+    width: 20px;
+    fill: white;
+}
+
+.register-login-link {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.register-login-link a {
+    color: var(--color-azul-boton);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-login-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .layout-header {
+        flex-direction: column;
+        padding: 10px 15px;
+    }
+    .layout-header nav ul {
+        margin-top: 10px;
+        gap: 0.5rem;
+    }
+
+    .hero-section {
+        padding: 60px 15px;
+    }
+    .hero-section h1 {
+        font-size: 2em;
+    }
+    .hero-section form {
+        width: 90%;
+        flex-direction: column;
+    }
+    .hero-section form input,
+    .hero-section form button[type="submit"] {
+        border-radius: 5px;
+        width: 100%;
+    }
+    .hero-section form button[type="submit"] {
+        margin-top: 10px;
+    }
+
+    .features-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-card,
+    .product-card {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .search-results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .login-form-wrapper,
+    .register-form-wrapper {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .layout-header .logo-text {
+        font-size: 1.5em;
+    }
+    .layout-header nav ul li a {
+        font-size: 1em;
+    }
+
+    .hero-section h1 {
+        font-size: 1.8em;
+    }
 }

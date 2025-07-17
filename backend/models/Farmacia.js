@@ -1,26 +1,24 @@
+// backend/models/Farmacia.js
 const mongoose = require('mongoose');
 
 const farmaciaSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: true,
-        trim: true,
-        unique: true
+        unique: true,
     },
-    ubicacion: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ubicacion',
-        required: true
-    },
-    urlBaseScraper: { // Para el scraper
+    url: {
         type: String,
-        required: false,
-        trim: true
-    }
+        required: true,
+    },
+    // Asegúrate de que este campo exista y sea String
+    Ubicacion: { // O 'direccion' si lo cambiaste
+        type: String,
+        required: false, // Puedes hacerlo opcional si no todas las farmacias tienen una ubicación precisa
+    },
+    // Otros campos...
 }, {
-    timestamps: true
+    timestamps: true,
 });
-
-farmaciaSchema.index({ nombre: 1 });
 
 module.exports = mongoose.model('Farmacia', farmaciaSchema);
